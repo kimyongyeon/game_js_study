@@ -162,88 +162,88 @@
         }
         
         CrapGame.prototype.draw = function(fnDraw) {
-            fnDraw.show();
+            fnDraw.show(this);
         }
         
         var draw1 = {
-            show: function () {
+            show: function (_this) {
                 var dotx;
                 var doty;
 
-                this.ctx.beginPath();
+                _this.ctx.beginPath();
 
-                dotx = this.dx + 0.5 * this.dicewidth;
-                doty = this.dy + 0.5 * this.diceheight;
-                this.ctx.arc(dotx, doty, this.dotrad, 0, Math.PI * 2, true);
+                dotx = _this.dx + 0.5 * _this.dicewidth;
+                doty = _this.dy + 0.5 * _this.diceheight;
+                _this.ctx.arc(dotx, doty, _this.dotrad, 0, Math.PI * 2, true);
 
-                this.ctx.closePath();
-                this.ctx.fill();
+                _this.ctx.closePath();
+                _this.ctx.fill();
             }
         }
         var draw2 = {
-            show: function () {
+            show: function (_this) {
                 var dotx;
                 var doty;
 
-                this.ctx.beginPath();
+                _this.ctx.beginPath();
 
-                dotx = this.dx + 3 * this.dotrad;
-                doty = this.dy + 3 * this.dotrad;
-                this.ctx.arc(dotx, doty, this.dotrad, 0, Math.PI * 2, true);
-                dotx = this.dx + this.dicewidth - 3 * this.dotrad;
-                doty = this.dy + this.diceheight - 3 * this.dotrad;
-                this.ctx.arc(dotx, doty, this.dotrad, 0, Math.PI * 2, true);
+                dotx = _this.dx + 3 * _this.dotrad;
+                doty = _this.dy + 3 * _this.dotrad;
+                _this.ctx.arc(dotx, doty, _this.dotrad, 0, Math.PI * 2, true);
+                dotx = _this.dx + _this.dicewidth - 3 * _this.dotrad;
+                doty = _this.dy + _this.diceheight - 3 * _this.dotrad;
+                _this.ctx.arc(dotx, doty, _this.dotrad, 0, Math.PI * 2, true);
 
-                this.ctx.closePath();
-                this.ctx.fill();
+                _this.ctx.closePath();
+                _this.ctx.fill();
             }
         }
         var draw4 = {
-            show: function () {
+            show: function (_this) {
                 var dotx;
                 var doty;
 
-                this.ctx.beginPath();
+                _this.ctx.beginPath();
 
-                dotx = this.dx + 3 * this.dotrad;
-                doty = this.dy + 3 * this.dotrad;
-                this.ctx.arc(dotx, doty, this.dotrad, 0, Math.PI * 2, true);
-                dotx = this.dx + this.dicewidth - 3 * this.dotrad;
-                doty = this.dy + this.diceheight - 3 * this.dotrad;
-                this.ctx.arc(dotx, doty, this.dotrad, 0, Math.PI * 2, true);
+                dotx = _this.dx + 3 * _this.dotrad;
+                doty = _this.dy + 3 * _this.dotrad;
+                _this.ctx.arc(dotx, doty, _this.dotrad, 0, Math.PI * 2, true);
+                dotx = _this.dx + _this.dicewidth - 3 * _this.dotrad;
+                doty = _this.dy + _this.diceheight - 3 * _this.dotrad;
+                _this.ctx.arc(dotx, doty, _this.dotrad, 0, Math.PI * 2, true);
 
-                this.ctx.closePath();
-                this.ctx.fill();
+                _this.ctx.closePath();
+                _this.ctx.fill();
 
-                this.ctx.beginPath();
+                _this.ctx.beginPath();
 
-                dotx = this.dx + 3 * this.dotrad;
-                doty = this.dy + this.diceheight - 3 * this.dotrad;
-                this.ctx.arc(dotx, doty, this.dotrad, 0, Math.PI * 2, true);
-                dotx = this.dx + this.dicewidth - 3 * this.dotrad;
-                doty = this.dy + 3 * this.dotrad;
-                this.ctx.arc(dotx, doty, this.dotrad, 0, Math.PI * 2, true);
+                dotx = _this.dx + 3 * _this.dotrad;
+                doty = _this.dy + _this.diceheight - 3 * _this.dotrad;
+                _this.ctx.arc(dotx, doty, _this.dotrad, 0, Math.PI * 2, true);
+                dotx = _this.dx + _this.dicewidth - 3 * _this.dotrad;
+                doty = _this.dy + 3 * _this.dotrad;
+                _this.ctx.arc(dotx, doty, _this.dotrad, 0, Math.PI * 2, true);
 
-                this.ctx.closePath();
-                this.ctx.fill();
+                _this.ctx.closePath();
+                _this.ctx.fill();
             }
         }
         var draw2mid = {
-            show: function() {
+            show: function(_this) {
                 var dotx;
                 var doty;
 
-                this.ctx.beginPath();
+                _this.ctx.beginPath();
 
-                dotx = this.dx + 3 * this.dotrad;
-                doty = this.dy + 0.5 * this.diceheight;
-                this.ctx.arc(dotx, doty, this.dotrad, 0, Math.PI * 2, true);
-                dotx = this.dx + this.dicewidth - 3 * this.dotrad;
-                doty = this.dy + 0.5 * this.diceheight;
-                this.ctx.arc(dotx, doty, this.dotrad, 0, Math.PI * 2, true);
+                dotx = _this.dx + 3 * _this.dotrad;
+                doty = _this.dy + 0.5 * _this.diceheight;
+                _this.ctx.arc(dotx, doty, _this.dotrad, 0, Math.PI * 2, true);
+                dotx = _this.dx + _this.dicewidth - 3 * _this.dotrad;
+                doty = _this.dy + 0.5 * _this.diceheight;
+                _this.ctx.arc(dotx, doty, _this.dotrad, 0, Math.PI * 2, true);
 
-                this.ctx.closePath();
-                this.ctx.fill();
+                _this.ctx.closePath();
+                _this.ctx.fill();
             }
         }
 
