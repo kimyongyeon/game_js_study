@@ -14,6 +14,7 @@
 
 <body>
 
+    <a href="/">홈</a>
     <button onclick="c.throwdice();">주사위 던지기</button>
 
     <form name="f">
@@ -126,45 +127,45 @@
             var doty;
             this.ctx.fillStyle = "#009966";
             switch (n) {
-                case 1:
-                    this.draw(draw1);
-                    //this.draw1();
-                    break;
-                case 2:
-                    this.draw(draw2);
-    //                this.draw2();
+            case 1:
+                this.draw(draw1);
+                //this.draw1();
+                break;
+            case 2:
+                this.draw(draw2);
+                //                this.draw2();
 
-                    break;
-                case 3:
-                    this.draw(draw2);
-                    this.draw(draw1);
-    //                this.draw2();
-    //                this.draw1();
-                    break;
-                case 4:
-                    this.draw(draw4);
-    //                this.draw4();
-                    break;
-                case 5:
-                    this.draw(draw4);
-                    this.draw(draw1);                    
-    //                this.draw4();
-    //                this.draw1();
-                    break;
-                case 6:
-                    this.draw(draw4);
-                    this.draw(draw2mid);                    
-    //                this.draw4();
-    //                this.draw2mid();
-                    break;
+                break;
+            case 3:
+                this.draw(draw2);
+                this.draw(draw1);
+                //                this.draw2();
+                //                this.draw1();
+                break;
+            case 4:
+                this.draw(draw4);
+                //                this.draw4();
+                break;
+            case 5:
+                this.draw(draw4);
+                this.draw(draw1);
+                //                this.draw4();
+                //                this.draw1();
+                break;
+            case 6:
+                this.draw(draw4);
+                this.draw(draw2mid);
+                //                this.draw4();
+                //                this.draw2mid();
+                break;
 
             }
         }
-        
-        CrapGame.prototype.draw = function(fnDraw) {
+
+        CrapGame.prototype.draw = function (fnDraw) {
             fnDraw.show(this);
         }
-        
+
         var draw1 = {
             show: function (_this) {
                 var dotx;
@@ -229,7 +230,7 @@
             }
         }
         var draw2mid = {
-            show: function(_this) {
+            show: function (_this) {
                 var dotx;
                 var doty;
 
