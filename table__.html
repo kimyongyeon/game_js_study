@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>table__</title>
+    <style>
+        table {
+            table-layout: fixed;
+            
+        }
+        table tr td{
+            position: relative;
+            border: 1px solid black;
+            height: 50px;
+        }
+        table tr th {
+            background: gray;
+            color: white;
+            border-bottom: 10px solid red;
+        }
+        .win {
+            position: absolute;
+            left: 22px;
+            top: 0.7em;
+        }
+        .inline {
+            display: inline;
+        }
+        .black {
+            display: block;
+        }
+        .mt-10 {
+            margin-top: 10px;
+        }
+        .mb-10 {
+            margin-bottom: 10px;
+        }
+        .under-line {
+            border-bottom: 1px solid black;
+        }
+        p:hover {
+            background: blue;
+            opacity: 0.3;
+            color: white;
+        }
+        
+    </style>
+</head>
+<body>
+   
+   <h1>테이블을 그려 보자. </h1>
+    <table>
+        <tr>
+            <th>날짜</th>
+            <th>스타트 시간</th>
+        </tr>
+        <tr>
+            <td>2012-13-12 <div class="win">win</div></td>
+            <td>starttime : 2012-12-33</td>
+        </tr>
+    </table>
+    
+    <hr>
+    
+    <h1>누구나 쉽게 하는 html5 따라해 보자.</h1>
+    
+    <div class="bxslider">
+        <p class="mt-10 mb-10 under-line">야호</p>
+        <p class="mt-10 mb-10 under-line">누구나</p>
+        <span class="black mt-10 mb-10 under-line">이게 뭔디</span>
+        <span class="mt-10 mb-10 under-line">나는 누구냐</span>
+        <mark class="mt-10 mb-10 under-line">이대로 이건 되는건가요?</mark>
+    </div>
+    
+    <hr>
+    
+    
+</body>
+</html>

@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>주사위 던지기</title>
+    <style>
+        input {
+            display: block;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <button onclick="c.throwdice();">주사위 던지기</button>
+
+    <form name="f">
+        판:
+        <input type="text" name="stage" id="" value="첫 번째 던지기"> 포인트:
+        <input type="text" name="outcome" id="" value=""> 결과:
+        <input type="text" name="pv" id="" value=""> 판돈:
+        <input type="text" name="bank" value="100">
+    </form>
+    <script>
+        var c = new CrapGame();
+
+        function CrapGame() {
+            this.cwidth = 400;
+            this.cheight = 300;
+            this.dicex = 50;
+            this.dicey = 50;
+            this.dicewidth = 100;
+            this.diceheight = 100;
+            this.dotrad = 6;
+            this.ctx;
+            this.dx;
+            this.dy;
+            this.firstturn = true;
+            this.point;
+        }
+
+        CrapGame.prototype.throwdice = function () {
+            var sum;
+            var ch = 1 + Math.floor(Math.random() * 6);
+            sum = ch;
+            this.dx = this.dicex;
+            this.dy = this.dicey;
+            this.drawface(ch);
+            this.dx = this.dicex + 150;
+            ch = 1 + Math.floor(Math.random() * 6);
+            sum += ch;
+
+            console.log(ch);
+            this.drawface(ch);
+
+            if (this.firstturn) {
+                switch (sum) {
+                case 7:
+                case 11:
+                    this.bank = Number(document.f.bank.value);
+                    this.bank += 20;
+                    document.f.bank.value = String(this.bank);
+                    document.f.outcome.value = "내가 이겼습니다.";
+                    break;
+                case 2:
+                case 3:
+                case 12:
+                    this.bank = Number(document.f.bank.value);
+                    if (this.bank < 10) {
+                        alert("판돈이 떨어졌습니다.");
+                        this.bank = 100;
+                        document.f.bank.value = String(this.bank);
+                        return;
+                    }
+                    this.bank = this.bank - 10;
+                    document.f.bank.value = String(this.bank);
+
+                    document.f.outcome.value = "내가 졌습니다.";
+                    break;
+                default:
+                    this.point = sum;
+                    document.f.pv.value = this.point;
+                    this.firstturn = false;
+                    document.f.stage.value = "다시 던지세요";
+                    document.f.outcome.value = "          ";
+                }
+            } else {
+
+                switch (sum) {
+                case this.point:
+                    this.bank = Number(document.f.bank.value);
+                    if (this.bank < 10) {
+                        alert("판돈이 떨어졌습니다.");
+                        this.bank = 100;
+                        document.f.bank.value = String(this.bank);
+                        return;
+                    }
+                    this.bank = this.bank - 10;
+                    document.f.bank.value = String(this.bank);
+                    document.f.outcome.value = "컴퓨터 이겼습니다.";
+                    document.f.stage.value = "새로 시작";
+                    document.f.pv.value = " ";
+                    this.firstturn = true;
+                    break;
+                case 7:
+                    this.bank = Number(document.f.bank.value);
+                    this.bank += 20;
+                    document.f.bank.value = String(this.bank);
+                    document.f.outcome.value = "컴퓨터 졌습니다.";
+                    document.f.stage.value = "새로 시작";
+                    document.f.pv.value = " ";
+                    this.firstturn = true;
+                    break;
+                }
+            }
+        }
+
+        CrapGame.prototype.drawface = function (n) {
+            this.ctx = document.getElementById('canvas').getContext('2d');
+            this.ctx.lineWidth = 5;
+            this.ctx.clearRect(this.dx, this.dy, this.dicewidth, this.diceheight);
+            this.ctx.strokeRect(this.dx, this.dy, this.diceheight, this.diceheight);
+            var dotx;
+            var doty;
+            this.ctx.fillStyle = "#009966";
+            switch (n) {
+                case 1:
+                    this.draw(draw1);
+                    //this.draw1();
+                    break;
+                case 2:
+                    this.draw(draw2);
+    //                this.draw2();
+
+                    break;
+                case 3:
+                    this.draw(draw2);
+                    this.draw(draw1);
+    //                this.draw2();
+    //                this.draw1();
+                    break;
+                case 4:
+                    this.draw(draw4);
+    //                this.draw4();
+                    break;
+                case 5:
+                    this.draw(draw4);
+                    this.draw(draw1);                    
+    //                this.draw4();
+    //                this.draw1();
+                    break;
+                case 6:
+                    this.draw(draw4);
+                    this.draw(draw2mid);                    
+    //                this.draw4();
+    //                this.draw2mid();
+                    break;
+
+            }
+        }
+        
+        CrapGame.prototype.draw = function(fnDraw) {
+            fnDraw.show();
+        }
+        
+        var draw1 = {
+            show: function () {
+                var dotx;
+                var doty;
+
+                this.ctx.beginPath();
+
+                dotx = this.dx + 0.5 * this.dicewidth;
+                doty = this.dy + 0.5 * this.diceheight;
+                this.ctx.arc(dotx, doty, this.dotrad, 0, Math.PI * 2, true);
+
+                this.ctx.closePath();
+                this.ctx.fill();
+            }
+        }
+        var draw2 = {
+            show: function () {
+                var dotx;
+                var doty;
+
+                this.ctx.beginPath();
+
+                dotx = this.dx + 3 * this.dotrad;
+                doty = this.dy + 3 * this.dotrad;
+                this.ctx.arc(dotx, doty, this.dotrad, 0, Math.PI * 2, true);
+                dotx = this.dx + this.dicewidth - 3 * this.dotrad;
+                doty = this.dy + this.diceheight - 3 * this.dotrad;
+                this.ctx.arc(dotx, doty, this.dotrad, 0, Math.PI * 2, true);
+
+                this.ctx.closePath();
+                this.ctx.fill();
+            }
+        }
+        var draw4 = {
+            show: function () {
+                var dotx;
+                var doty;
+
+                this.ctx.beginPath();
+
+                dotx = this.dx + 3 * this.dotrad;
+                doty = this.dy + 3 * this.dotrad;
+                this.ctx.arc(dotx, doty, this.dotrad, 0, Math.PI * 2, true);
+                dotx = this.dx + this.dicewidth - 3 * this.dotrad;
+                doty = this.dy + this.diceheight - 3 * this.dotrad;
+                this.ctx.arc(dotx, doty, this.dotrad, 0, Math.PI * 2, true);
+
+                this.ctx.closePath();
+                this.ctx.fill();
+
+                this.ctx.beginPath();
+
+                dotx = this.dx + 3 * this.dotrad;
+                doty = this.dy + this.diceheight - 3 * this.dotrad;
+                this.ctx.arc(dotx, doty, this.dotrad, 0, Math.PI * 2, true);
+                dotx = this.dx + this.dicewidth - 3 * this.dotrad;
+                doty = this.dy + 3 * this.dotrad;
+                this.ctx.arc(dotx, doty, this.dotrad, 0, Math.PI * 2, true);
+
+                this.ctx.closePath();
+                this.ctx.fill();
+            }
+        }
+        var draw2mid = {
+            show: function() {
+                var dotx;
+                var doty;
+
+                this.ctx.beginPath();
+
+                dotx = this.dx + 3 * this.dotrad;
+                doty = this.dy + 0.5 * this.diceheight;
+                this.ctx.arc(dotx, doty, this.dotrad, 0, Math.PI * 2, true);
+                dotx = this.dx + this.dicewidth - 3 * this.dotrad;
+                doty = this.dy + 0.5 * this.diceheight;
+                this.ctx.arc(dotx, doty, this.dotrad, 0, Math.PI * 2, true);
+
+                this.ctx.closePath();
+                this.ctx.fill();
+            }
+        }
+
+        CrapGame.prototype.draw1 = function () {
+            var dotx;
+            var doty;
+
+            this.ctx.beginPath();
+
+            dotx = this.dx + 0.5 * this.dicewidth;
+            doty = this.dy + 0.5 * this.diceheight;
+            this.ctx.arc(dotx, doty, this.dotrad, 0, Math.PI * 2, true);
+
+            this.ctx.closePath();
+            this.ctx.fill();
+        }
+
+        CrapGame.prototype.draw2 = function () {
+            var dotx;
+            var doty;
+
+            this.ctx.beginPath();
+
+            dotx = this.dx + 3 * this.dotrad;
+            doty = this.dy + 3 * this.dotrad;
+            this.ctx.arc(dotx, doty, this.dotrad, 0, Math.PI * 2, true);
+            dotx = this.dx + this.dicewidth - 3 * this.dotrad;
+            doty = this.dy + this.diceheight - 3 * this.dotrad;
+            this.ctx.arc(dotx, doty, this.dotrad, 0, Math.PI * 2, true);
+
+            this.ctx.closePath();
+            this.ctx.fill();
+        }
+
+        CrapGame.prototype.draw4 = function () {
+            var dotx;
+            var doty;
+
+            this.ctx.beginPath();
+
+            dotx = this.dx + 3 * this.dotrad;
+            doty = this.dy + 3 * this.dotrad;
+            this.ctx.arc(dotx, doty, this.dotrad, 0, Math.PI * 2, true);
+            dotx = this.dx + this.dicewidth - 3 * this.dotrad;
+            doty = this.dy + this.diceheight - 3 * this.dotrad;
+            this.ctx.arc(dotx, doty, this.dotrad, 0, Math.PI * 2, true);
+
+            this.ctx.closePath();
+            this.ctx.fill();
+
+            this.ctx.beginPath();
+
+            dotx = this.dx + 3 * this.dotrad;
+            doty = this.dy + this.diceheight - 3 * this.dotrad;
+            this.ctx.arc(dotx, doty, this.dotrad, 0, Math.PI * 2, true);
+            dotx = this.dx + this.dicewidth - 3 * this.dotrad;
+            doty = this.dy + 3 * this.dotrad;
+            this.ctx.arc(dotx, doty, this.dotrad, 0, Math.PI * 2, true);
+
+            this.ctx.closePath();
+            this.ctx.fill();
+        }
+
+        CrapGame.prototype.draw2mid = function () {
+            var dotx;
+            var doty;
+
+            this.ctx.beginPath();
+
+            dotx = this.dx + 3 * this.dotrad;
+            doty = this.dy + 0.5 * this.diceheight;
+            this.ctx.arc(dotx, doty, this.dotrad, 0, Math.PI * 2, true);
+            dotx = this.dx + this.dicewidth - 3 * this.dotrad;
+            doty = this.dy + 0.5 * this.diceheight;
+            this.ctx.arc(dotx, doty, this.dotrad, 0, Math.PI * 2, true);
+
+            this.ctx.closePath();
+            this.ctx.fill();
+        }
+    </script>
+    <canvas id="canvas" width="400" height="300">
+        이 브라우저는 html5의 canvas 요소를 지원하지 않습니다.
+    </canvas>
+</body>
+
+</html>
