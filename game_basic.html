@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>hello game study</title>
+</head>
+    <body onload="init();">
+    <h1>스마일 </h1>
+    
+    <canvas id="canvas" width="400" height="300">
+        이 브라우저는 html5의 canvas 요소를 지원하지 않습니다.
+    </canvas>
+    
+    <script>
+      function init() {
+          var ctx = document.getElementById("canvas").getContext("2d");
+          ctx.beginPath();
+          // x, y, 
+          ctx.arc(200,100,16,0,2*Math.PI, true);
+          ctx.fill();
+          ctx.closePath();
+          
+          ctx.beginPath();
+          ctx.arc(100,100,16,0,2*Math.PI, true);
+          ctx.strokeStyle="rgb(200,0,0)";
+          ctx.lineWidth=5;
+          ctx.stroke();
+          ctx.closePath();
+          
+          ctx.beginPath();
+          ctx.arc(200,200,16,0,2*Math.PI, true);
+          ctx.arc(100,200,16,0,2*Math.PI, true);
+          ctx.fill();
+          ctx.closePath();
+          
+          //ctx.stroke();
+          
+      }  
+    </script>
+
+</body>
+</html>
