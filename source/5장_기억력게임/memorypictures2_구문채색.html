@@ -1,0 +1,212 @@
+<pre>
+<font face="돋움">
+<font color="#322dff">&lt;html&gt;</font>
+<font color="#322dff">&lt;head&gt;</font>
+<font color="#000000">    </font><font color="#322dff">&lt;title&gt;</font><font color="#000000">기억력 게임: 사진 맞추기</font><font color="#322dff">&lt;/title&gt;</font>
+<font color="#000000">    </font><font color="#322dff">&lt;style&gt;</font>
+	<font color="#d54000">form {</font>
+	<font color="#0000ff">width:</font><font color="#d54000">330px;</font>
+	<font color="#0000ff">margin:</font><font color="#d54000">20px;</font>
+	<font color="#0000ff">background-color:</font><font color="#d54000">pink;</font>
+	<font color="#0000ff">padding:</font><font color="#d54000">20px;</font>
+	<font color="#d54000">}</font>
+	<font color="#d54000">input {</font>
+	<font color="#0000ff">text-align:</font><font color="#ff0000">right</font><font color="#d54000">;</font>
+	<font color="#d54000">}</font>
+	<font color="#322dff">&lt;/style&gt;</font>
+<font color="#000000">    </font><font color="#322dff">&lt;script </font><font color="#ff0000">type</font><font color="#322dff">=</font><font color="#ff00ff">&quot;text/javascript&quot;</font><font color="#322dff">&gt;</font>
+	<font color="#0000ff">var </font><font color="#d54000">cwidth = </font><font color="#800080">900</font><font color="#d54000">;</font>
+	<font color="#0000ff">var </font><font color="#d54000">cheight = </font><font color="#800080">400</font><font color="#d54000">;</font>
+	<font color="#0000ff">var </font><font color="#d54000">ctx;</font>
+	<font color="#0000ff">var </font><font color="#d54000">firstpick = </font><font color="#0000ff">true</font><font color="#d54000">;</font>
+	<font color="#0000ff">var </font><font color="#d54000">firstcard = -</font><font color="#800080">1</font><font color="#d54000">;</font>
+	<font color="#0000ff">var </font><font color="#d54000">secondcard;</font>
+	<font color="#0000ff">var </font><font color="#d54000">backcolor = </font><font color="#ff00ff">&quot;rgb(128,0,128)&quot;</font><font color="#d54000">;</font>
+	<font color="#0000ff">var </font><font color="#d54000">tablecolor = </font><font color="#ff00ff">&quot;rgb(255,255,255)&quot;</font><font color="#d54000">;</font>
+	<font color="#0000ff">var </font><font color="#d54000">deck = [];</font>
+	<font color="#0000ff">var </font><font color="#d54000">firstsx = </font><font color="#800080">30</font><font color="#d54000">;</font>
+	<font color="#0000ff">var </font><font color="#d54000">firstsy = </font><font color="#800080">50</font><font color="#d54000">;</font>
+	<font color="#0000ff">var </font><font color="#d54000">margin = </font><font color="#800080">30</font><font color="#d54000">;</font>
+	<font color="#0000ff">var </font><font color="#d54000">cardwidth = </font><font color="#800080">100</font><font color="#d54000">;</font>
+	<font color="#0000ff">var </font><font color="#d54000">cardheight = </font><font color="#800080">100</font><font color="#d54000">;</font>
+	<font color="#0000ff">var </font><font color="#d54000">tid;</font>
+	<font color="#0000ff">var </font><font color="#d54000">matched;</font>
+	<font color="#0000ff">var </font><font color="#d54000">starttime;</font>
+	<font color="#0000ff">var </font><font color="#d54000">count = </font><font color="#800080">0</font><font color="#d54000">;</font>
+	<font color="#0000ff">var </font><font color="#d54000">pairs = [</font>
+		<font color="#d54000">[</font><font color="#ff00ff">&quot;allison1.jpg&quot;</font><font color="#d54000">,</font><font color="#ff00ff">&quot;allison2.jpg&quot;</font><font color="#d54000">],</font>
+	   <font color="#d54000">[ </font><font color="#ff00ff">&quot;grant1.jpg&quot;</font><font color="#d54000">,</font><font color="#ff00ff">&quot;grant2.jpg&quot;</font><font color="#d54000">],</font>
+	  <font color="#d54000">[</font><font color="#ff00ff">&quot;liam1.jpg&quot;</font><font color="#d54000">,</font><font color="#ff00ff">&quot;liam2.jpg&quot;</font><font color="#d54000">],</font>
+	   <font color="#d54000">[</font><font color="#ff00ff">&quot;aviva1.jpg&quot;</font><font color="#d54000">,</font><font color="#ff00ff">&quot;aviva2.jpg&quot;</font><font color="#d54000">],	   </font>
+	   <font color="#d54000">[</font><font color="#ff00ff">&quot;daniel1.jpg&quot;</font><font color="#d54000">,</font><font color="#ff00ff">&quot;daniel2.jpg&quot;</font><font color="#d54000">]	   </font>
+	<font color="#d54000">]</font>
+	
+<font color="#008000">// 데크에는 카드 정보(위치, 크기, 그림 출처, 식별 정보)가 들어있음</font>
+<font color="#008000">// 이 정보는 makedeck 함수에 들어있는 배열의 배열을 통해 지정됨</font>
+
+<font color="#0000ff">function </font><font color="#d54000">Card(sx,sy,swidth,sheight, img, info) {</font>
+	<font color="#0000ff">this</font><font color="#d54000">.sx = sx;</font>
+	<font color="#0000ff">this</font><font color="#d54000">.sy = sy;</font>
+	<font color="#0000ff">this</font><font color="#d54000">.swidth = swidth;</font>
+	<font color="#0000ff">this</font><font color="#d54000">.sheight = sheight;</font>
+	<font color="#0000ff">this</font><font color="#d54000">.info = info;</font>
+	<font color="#0000ff">this</font><font color="#d54000">.img = img;</font>
+	<font color="#0000ff">this</font><font color="#d54000">.draw = drawback;</font>
+<font color="#d54000">}</font>
+
+<font color="#008000">// 다각형 카드 5쌍 묶음을 생성</font>
+<font color="#0000ff">function </font><font color="#d54000">makedeck() {</font>
+	<font color="#0000ff">var </font><font color="#d54000">i;</font>
+	<font color="#0000ff">var </font><font color="#d54000">acard;</font>
+	<font color="#0000ff">var </font><font color="#d54000">bcard;</font>
+	<font color="#0000ff">var </font><font color="#d54000">pica;</font>
+	<font color="#0000ff">var </font><font color="#d54000">picb;</font>
+	<font color="#0000ff">var </font><font color="#d54000">cx = firstsx;</font>
+	<font color="#0000ff">var </font><font color="#d54000">cy = firstsy;</font>
+	<font color="#0000ff">for</font><font color="#d54000">(i=</font><font color="#800080">0</font><font color="#d54000">;i&lt;pairs.length;i++) {</font>
+		<font color="#d54000">pica = </font><font color="#0000ff">new </font><font color="#ff0000">Image</font><font color="#d54000">();</font>
+		<font color="#d54000">pica.src = pairs[i][</font><font color="#800080">0</font><font color="#d54000">];</font>
+		<font color="#d54000">acard = </font><font color="#0000ff">new </font><font color="#d54000">Card(cx,cy,cardwidth,cardheight,pica,i);</font>
+		<font color="#d54000">deck.push(acard);</font>
+		<font color="#d54000">picb = </font><font color="#0000ff">new </font><font color="#ff0000">Image</font><font color="#d54000">();</font>
+		<font color="#d54000">picb.src = pairs[i][</font><font color="#800080">1</font><font color="#d54000">];		</font>
+		<font color="#d54000">bcard = </font><font color="#0000ff">new </font><font color="#d54000">Card(cx,cy+cardheight+margin,cardwidth,cardheight,picb,i);</font>
+		<font color="#d54000">deck.push(bcard);</font>
+		<font color="#d54000">cx = cx+cardwidth+ margin;</font>
+		<font color="#d54000">acard.draw();</font>
+		<font color="#d54000">bcard.draw();</font>
+	<font color="#d54000">}</font>
+	
+<font color="#d54000">}</font>
+
+<font color="#0000ff">function </font><font color="#d54000">shuffle() {</font>
+<font color="#008000">// 현실의 기억력 게임에서 카드를 섞는 방식과 흡사하도록 코딩</font>
+<font color="#008000">// 바뀌는 정보(일치 카드를 나타내는 img와 info)를 교체</font>
+<font color="#0000ff">var </font><font color="#d54000">i;</font>
+<font color="#0000ff">var </font><font color="#d54000">k;</font>
+<font color="#0000ff">var </font><font color="#d54000">holderinfo;</font>
+<font color="#0000ff">var </font><font color="#d54000">holderimg;</font>
+<font color="#0000ff">var </font><font color="#d54000">dl = deck.length</font>
+<font color="#0000ff">var </font><font color="#d54000">nt;</font>
+	<font color="#0000ff">for </font><font color="#d54000">(nt=</font><font color="#800080">0</font><font color="#d54000">;nt&lt;</font><font color="#800080">3</font><font color="#d54000">*dl;nt++) {  </font><font color="#008000">// 교체를 3 곱하기 deck.length번 실시</font>
+	  <font color="#d54000">i = </font><font color="#ff0000">Math</font><font color="#d54000">.floor(</font><font color="#ff0000">Math</font><font color="#d54000">.random()*dl);</font>
+	  <font color="#d54000">k = </font><font color="#ff0000">Math</font><font color="#d54000">.floor(</font><font color="#ff0000">Math</font><font color="#d54000">.random()*dl);</font>
+	  <font color="#d54000">holderinfo = deck[i].info;</font>
+	  <font color="#d54000">holderimg = deck[i].img;</font>
+	  <font color="#d54000">deck[i].info = deck[k].info;</font>
+	  <font color="#d54000">deck[i].img = deck[k].img;</font>
+	  <font color="#d54000">deck[k].info = holderinfo;</font>
+	  <font color="#d54000">deck[k].img = holderimg;</font>
+	<font color="#d54000">}</font>
+<font color="#d54000">}</font>
+
+
+<font color="#0000ff">function </font><font color="#d54000">drawback() {</font>
+	<font color="#d54000">ctx.fillStyle = backcolor;</font>
+	<font color="#d54000">ctx.fillRect(</font><font color="#0000ff">this</font><font color="#d54000">.sx,</font><font color="#0000ff">this</font><font color="#d54000">.sy,</font><font color="#0000ff">this</font><font color="#d54000">.swidth,</font><font color="#0000ff">this</font><font color="#d54000">.sheight);	</font>
+<font color="#d54000">}</font>
+
+
+<font color="#0000ff">function </font><font color="#d54000">choose(ev) {</font>
+	<font color="#0000ff">var </font><font color="#d54000">out;</font>
+	<font color="#0000ff">var </font><font color="#d54000">mx;</font>
+	<font color="#0000ff">var </font><font color="#d54000">my;</font>
+	<font color="#0000ff">var </font><font color="#d54000">pick1;</font>
+	<font color="#0000ff">var </font><font color="#d54000">pick2;</font>
+	<font color="#0000ff">if </font><font color="#d54000">( ev.layerX ||  ev.layerX == </font><font color="#800080">0</font><font color="#d54000">) { </font><font color="#008000">// 파이어폭스</font>
+   			<font color="#d54000">mx= ev.layerX;</font>
+    		<font color="#d54000">my = ev.layerY;</font>
+  		<font color="#d54000">} </font><font color="#0000ff">else if </font><font color="#d54000">(ev.offsetX || ev.offsetX == </font><font color="#800080">0</font><font color="#d54000">) { </font><font color="#008000">// 오페라</font>
+    		<font color="#d54000">mx = ev.offsetX;</font>
+    		<font color="#d54000">my = ev.offsetY;</font>
+  		<font color="#d54000">}</font>
+	<font color="#0000ff">var </font><font color="#d54000">i;</font>
+	<font color="#0000ff">for </font><font color="#d54000">(i=</font><font color="#800080">0</font><font color="#d54000">;i&lt;deck.length;i++){</font>
+		<font color="#0000ff">var </font><font color="#d54000">card = deck[i];</font>
+		<font color="#0000ff">if </font><font color="#d54000">(card.sx &gt;=</font><font color="#800080">0</font><font color="#d54000">)  </font><font color="#008000">// 이렇게 하면, 이 공간이 클릭됐는지 검사하지 않아도 됨</font>
+		<font color="#0000ff">if </font><font color="#d54000">((mx&gt;card.sx)&amp;&amp;(mx&lt;card.sx+card.swidth)&amp;&amp;(my&gt;card.sy)&amp;&amp;(my&lt;card.sy+card.sheight)) {</font>
+			<font color="#008000">// 첫 번째 카드에 대한 클릭이 아닌지 확인</font>
+			<font color="#0000ff">if </font><font color="#d54000">((firstpick)|| (i!=firstcard)) {</font>
+				<font color="#0000ff">break</font><font color="#d54000">;}</font>
+		<font color="#d54000">}</font>
+	<font color="#d54000">}</font>
+	<font color="#0000ff">if </font><font color="#d54000">(i&lt;deck.length) {  </font><font color="#008000">// 카드가 클릭되면</font>
+		<font color="#0000ff">if </font><font color="#d54000">(firstpick) {</font>
+			<font color="#d54000">firstcard = i;</font>
+			<font color="#d54000">firstpick = </font><font color="#0000ff">false</font><font color="#d54000">;</font>
+			<font color="#d54000">ctx.drawImage(card.img,card.sx,card.sy,card.swidth,card.sheight); </font>
+		<font color="#d54000">}</font>
+		<font color="#0000ff">else </font><font color="#d54000">{</font>
+			<font color="#d54000">secondcard = i;</font>
+			<font color="#d54000">ctx.drawImage(card.img,card.sx,card.sy,card.swidth,card.sheight); </font>
+		  	<font color="#0000ff">if </font><font color="#d54000">(card.info==deck[firstcard].info) {</font>
+				<font color="#d54000">matched = </font><font color="#0000ff">true</font><font color="#d54000">;</font>
+				<font color="#d54000">count++;</font>
+				<font color="#d54000">ctx.fillStyle= tablecolor;</font>
+				<font color="#d54000">ctx.fillRect(</font><font color="#800080">10</font><font color="#d54000">,</font><font color="#800080">340</font><font color="#d54000">,</font><font color="#800080">900</font><font color="#d54000">,</font><font color="#800080">100</font><font color="#d54000">);</font>
+				<font color="#d54000">ctx.fillStyle=backcolor;</font>
+				<font color="#d54000">ctx.fillText(</font><font color="#ff00ff">&quot;현재까지 맞춘 횟수: &quot;</font><font color="#d54000">+</font><font color="#ff0000">String</font><font color="#d54000">(count),</font><font color="#800080">10</font><font color="#d54000">,</font><font color="#800080">360</font><font color="#d54000">);</font>
+				<font color="#0000ff">if </font><font color="#d54000">(count&gt;= .</font><font color="#800080">5</font><font color="#d54000">*deck.length) {</font>
+					<font color="#0000ff">var </font><font color="#d54000">now = </font><font color="#0000ff">new </font><font color="#ff0000">Date</font><font color="#d54000">();</font>
+					<font color="#0000ff">var </font><font color="#d54000">nt = Number(now.getTime());</font>
+					<font color="#0000ff">var </font><font color="#d54000">seconds = </font><font color="#ff0000">Math</font><font color="#d54000">.floor(.</font><font color="#800080">5</font><font color="#d54000">+(nt-starttime)/</font><font color="#800080">1000</font><font color="#d54000">); </font>
+					<font color="#d54000">ctx.fillStyle= tablecolor;</font>
+					<font color="#d54000">ctx.fillRect(</font><font color="#800080">0</font><font color="#d54000">,</font><font color="#800080">0</font><font color="#d54000">,</font><font color="#800080">900</font><font color="#d54000">,</font><font color="#800080">400</font><font color="#d54000">);</font>
+					<font color="#d54000">ctx.fillStyle=backcolor;</font>
+					<font color="#d54000">out = </font><font color="#ff00ff">&quot;게임 완료까지 &quot;</font><font color="#d54000">+</font><font color="#ff0000">String</font><font color="#d54000">(seconds)+ </font><font color="#ff00ff">&quot; 초 걸렸습니다.&quot;</font><font color="#d54000">;</font>
+					<font color="#d54000">ctx.fillText(out,</font><font color="#800080">10</font><font color="#d54000">,</font><font color="#800080">100</font><font color="#d54000">);</font>
+					<font color="#d54000">ctx.fillText(</font><font color="#ff00ff">&quot;다시 하시려면 페이지를 새로고침 하세요.&quot;</font><font color="#d54000">,</font><font color="#800080">10</font><font color="#d54000">,</font><font color="#800080">300</font><font color="#d54000">);</font>
+					<font color="#0000ff">return</font><font color="#d54000">;</font>
+				<font color="#d54000">}</font>
+				
+			<font color="#d54000">}</font>
+			<font color="#0000ff">else </font><font color="#d54000">{</font>
+				<font color="#d54000">matched = </font><font color="#0000ff">false</font><font color="#d54000">;</font>
+			<font color="#d54000">}</font>
+			<font color="#d54000">firstpick = </font><font color="#0000ff">true</font><font color="#d54000">;</font>
+			<font color="#d54000">tid = setTimeout(flipback,</font><font color="#800080">1000</font><font color="#d54000">);</font>
+		<font color="#d54000">}</font>
+	<font color="#d54000">}</font>
+<font color="#d54000">}</font>
+
+<font color="#0000ff">function </font><font color="#d54000">flipback() {</font>
+	<font color="#0000ff">var </font><font color="#d54000">card;</font>
+	<font color="#0000ff">if </font><font color="#d54000">(!matched) {</font>
+	<font color="#d54000">deck[firstcard].draw();</font>
+	<font color="#d54000">deck[secondcard].draw();</font>
+	<font color="#d54000">}</font>
+	<font color="#0000ff">else </font><font color="#d54000">{</font>
+		<font color="#d54000">ctx.fillStyle = tablecolor;</font>
+				<font color="#d54000">ctx.fillRect(deck[secondcard].sx,deck[secondcard].sy,deck[secondcard].swidth,deck[secondcard].sheight);</font>
+				<font color="#d54000">ctx.fillRect(deck[firstcard].sx,deck[firstcard].sy,deck[firstcard].swidth,deck[firstcard].sheight);</font>
+				<font color="#d54000">deck[secondcard].sx = -</font><font color="#800080">1</font><font color="#d54000">;</font>
+				<font color="#d54000">deck[firstcard].sx = -</font><font color="#800080">1</font><font color="#d54000">;</font>
+	<font color="#d54000">}</font>
+<font color="#d54000">}</font>
+
+<font color="#0000ff">function </font><font color="#d54000">init(){</font>
+   <font color="#d54000">ctx = </font><font color="#ff0000">document</font><font color="#d54000">.getElementById(</font><font color="#ff00ff">'canvas'</font><font color="#d54000">).getContext(</font><font color="#ff00ff">'2d'</font><font color="#d54000">); </font>
+   <font color="#d54000">canvas1 = </font><font color="#ff0000">document</font><font color="#d54000">.getElementById(</font><font color="#ff00ff">'canvas'</font><font color="#d54000">);</font>
+   <font color="#d54000">canvas1.addEventListener(</font><font color="#ff00ff">'click'</font><font color="#d54000">,choose,</font><font color="#0000ff">false</font><font color="#d54000">);</font>
+   <font color="#d54000">makedeck();</font>
+   <font color="#d54000">shuffle();</font>
+   <font color="#d54000">ctx.font=</font><font color="#ff00ff">&quot;bold 20pt sans-serif&quot;</font><font color="#d54000">;</font>
+   <font color="#d54000">ctx.fillText(</font><font color="#ff00ff">&quot;맞춰볼 두 카드를 클릭하세요.&quot;</font><font color="#d54000">,</font><font color="#800080">10</font><font color="#d54000">,</font><font color="#800080">20</font><font color="#d54000">);</font>
+   <font color="#d54000">ctx.fillText(</font><font color="#ff00ff">&quot;현재까지 맞춘 횟수: 0&quot;</font><font color="#d54000">,</font><font color="#800080">10</font><font color="#d54000">,</font><font color="#800080">360</font><font color="#d54000">);</font>
+   <font color="#d54000">starttime = </font><font color="#0000ff">new </font><font color="#ff0000">Date</font><font color="#d54000">();</font>
+   <font color="#d54000">starttime = Number(starttime.getTime());</font>
+  <font color="#d54000">} </font>
+
+<font color="#322dff">&lt;/script&gt;</font>
+<font color="#322dff">&lt;/head&gt;</font>
+<font color="#322dff">&lt;body </font><font color="#ff0000">onLoad</font><font color="#322dff">=</font><font color="#ff00ff">&quot;init();&quot;</font><font color="#322dff">&gt;</font><font color="#000000">  </font>
+<font color="#322dff">&lt;</font><font color="#222dfd">canvas </font><font color="#ff0000">id</font><font color="#322dff">=</font><font color="#ff00ff">&quot;canvas&quot; </font><font color="#ff0000">width</font><font color="#322dff">=</font><font color="#ff00ff">&quot;900&quot; </font><font color="#ff0000">height</font><font color="#322dff">=</font><font color="#ff00ff">&quot;400&quot;</font><font color="#322dff">&gt;</font>
+<font color="#000000">이 브라우저에서는 HTML5의 canvas 요소가 지원되지 않습니다.</font>
+<font color="#322dff">&lt;/</font><font color="#222dfd">canvas</font><font color="#322dff">&gt;</font><font color="#000000">  </font>
+<font color="#322dff">&lt;br/&gt;</font>
+
+<font color="#322dff">&lt;/body&gt;</font>
+<font color="#322dff">&lt;/html&gt;</font>
+
+</font>
+</pre>

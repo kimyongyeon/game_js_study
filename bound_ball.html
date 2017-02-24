@@ -10,6 +10,8 @@
             background-color: brown;
             padding: 20px;
         }
+        input:valid {background: green;}
+        input:invalid {background: red;}
     </style>
 </head>
 <body>
@@ -38,24 +40,49 @@
         vy: 8,
         rad: 10
     }
-    
+
+    var img = new Image();
+    img.src = "pearl.jpg";
     var ctx;
+    var grad;
+    var color;
+    var hue = [
+        [255, 0, 0],
+        [255, 255, 0],
+        [0, 255, 0],
+        [255, 255, 255],
+        [0, 0, 255],
+        [255, 0, 255]
+    ];
     
     var BoundBall = {
         init: function () {
+            var h=0;
             ctx = document.getElementById('canvas').getContext('2d');
+            grad = ctx.createLinearGradient(Box.x, Box.y, Box.x+Box.width, Box.y+Box.height);
+            hue.forEach(function(_h) {
+                color = `rgb(${_h[0]},${_h[1]},${_h[2]})`;
+                grad.addColorStop(h*1/6, color);
+                h++;
+            })
+            ctx.fillStyle = grad;
             ctx.lineWidth=Ball.rad;
-            ctx.fillStyle = "rgb(200, 0, 50)";
+            //ctx.fillStyle = "rgb(200, 0, 50)";
             BoundBall.moveball();
             setInterval(BoundBall.moveball, 100);
         },
         moveball: function () {
             ctx.clearRect(Box.x, Box.y, Box.width, Box.height);
             BoundBall.moveandcheck();
-            ctx.beginPath();
-            ctx.arc(Ball.x, Ball.y, Ball.rad, 0, Math.PI * 2, true);
-            ctx.fill();
-            ctx.strokeRect(Box.x, Box.y, Box.width, Box.height);
+            ctx.drawImage(img, Ball.x-Ball.rad, Ball.y-Ball.rad, 2*Ball.rad, 2*Ball.rad); // 그림그리기
+            ctx.fillRect(Box.x, Box.y, Ball.rad, Ball.height); // 왼쪽 벽 그리고 
+            ctx.fillRect(Box.x, Box.y+Box.width-Ball.rad,Box.y, Ball.rad, Box.height); // 오른쪽 벽 그리기
+            ctx.fillRect(Box.x, Box.y, Box.width, Ball.rad); // 상단 벽 그리기 
+            ctx.fillRect(Box.x, Box.y+Box.height-Ball.rad, Box.width, Ball.rad);
+//            ctx.beginPath();
+//            ctx.arc(Ball.x, Ball.y, Ball.rad, 0, Math.PI * 2, true);
+//            ctx.fill();
+//            ctx.strokeRect(Box.x, Box.y, Box.width, Box.height);
         },
         moveandcheck: function () {
             var nballx = Ball.x + Ball.vx;
