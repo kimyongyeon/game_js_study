@@ -7,11 +7,42 @@
     <body onload="init();">
     <h1>스마일 </h1>
     
+    <div class="main-title">
+        <p><label for="rad1">문재인<input name="rad" id="rad1" type="radio" value="문재인"></label></p>
+        <p><label for="rad2">안희정<input name="rad" id="rad2" type="radio"  value="안희정"></label></p>
+        <p><label for="rad3">안철수<input name="rad" id="rad3" type="radio"  value="안철수"></label></p>
+        <p>저 친구들 중 대통령이 될 가장 큰 확률을 가지고 있는 분은 누구인가?</p>
+    </div>
+
+    
     <canvas id="canvas" width="400" height="300">
         이 브라우저는 html5의 canvas 요소를 지원하지 않습니다.
     </canvas>
     
     <script>
+        
+        $("input[name=rad]").click(()=>{
+            var priceRace1 = new PrinceRace("input[name=rad]:checked");
+            var selectedName = priceRace1.getSelectedName();
+            console.log(selectedName);
+        });
+
+        function PrinceRace(_selector) {
+            this.name = "";
+            this.selectedName = "";
+            this.init(_selector);
+        }
+
+        PrinceRace.prototype.getSelectedName = function() {
+            return this.selectedName;
+        }
+
+        PrinceRace.prototype.init = function(_selector) {
+            console.log($(_selector));
+            var $selector = $(_selector);
+            this.selectedName = $selector.val();
+        }
+        
       function init() {
           var ctx = document.getElementById("canvas").getContext("2d");
           ctx.beginPath();

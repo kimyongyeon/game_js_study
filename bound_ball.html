@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>공튀기기</title>
+    <style>
+        form {
+            width: 330px;
+            margin: 20px;
+            background-color: brown;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+   
+<script>
+    
+    window.onload = function () {
+        BoundBall.init();
+    }
+    
+    var Box = {
+        x: 20,
+        y: 30,
+        width: 350,
+        height: 250,
+        getBoxBoundX: function () { return this.width + this.x - Ball.rad },
+        getBoxBoundY: function  () { return this.height + this.y - Ball.rad },
+        getInboxBoundX: function () { return this.x + Ball.rad },
+        getInboxBoundY: function () { return this.y + Ball.rad }
+    }
+    
+    var Ball = {
+        x: 50,
+        y: 60,
+        vx: 4,
+        vy: 8,
+        rad: 10
+    }
+    
+    var ctx;
+    
+    var BoundBall = {
+        init: function () {
+            ctx = document.getElementById('canvas').getContext('2d');
+            ctx.lineWidth=Ball.rad;
+            ctx.fillStyle = "rgb(200, 0, 50)";
+            BoundBall.moveball();
+            setInterval(BoundBall.moveball, 100);
+        },
+        moveball: function () {
+            ctx.clearRect(Box.x, Box.y, Box.width, Box.height);
+            BoundBall.moveandcheck();
+            ctx.beginPath();
+            ctx.arc(Ball.x, Ball.y, Ball.rad, 0, Math.PI * 2, true);
+            ctx.fill();
+            ctx.strokeRect(Box.x, Box.y, Box.width, Box.height);
+        },
+        moveandcheck: function () {
+            var nballx = Ball.x + Ball.vx;
+            var nbally = Ball.y + Ball.vy;
+            if (nballx > Box.getBoxBoundX()) {
+                Ball.vx = -Ball.vx;
+                nballx = Box.getBoxBoundX();
+            }
+            if (nballx < Box.getInboxBoundX()) {
+                nballx - Box.getInboxBoundX();
+                Ball.vx = -Ball.vx;
+            }
+            if (nbally > Box.getBoxBoundY()) {
+                nbally = Box.getBoxBoundY();
+                Ball.vy = -Ball.vy;
+            }
+            if (nbally < Box.getInboxBoundY()) {
+                nbally = Box.getInboxBoundY();
+                Ball.vy = -Ball.vy;
+            }
+            Ball.x = nballx;
+            Ball.y = nbally;
+        },
+        change: function () {
+            Ball.vx = Number(f.hv.value);
+            Ball.vy = Number(f.vv.value);
+            return false;
+        }
+    }
+    
+</script>
+   
+    <canvas id="canvas" width="400" height="300">이 브라우저는 html5의 canvas 요소를 지원하지 않습니다. </canvas>
+    
+    <br>
+    
+    <form name="f" id="f" onSubmit="return change();">
+        수평속도 <input name="hv" id="hv" value="4" type="number" min="-10" max="10" />
+        <br>
+        수직속도 <input name="vv" id="vv" value="8" type="number" min="-10" max="10" />
+        <input type="submit" value="변경">
+    </form>
+    
+</body>
+</html>
