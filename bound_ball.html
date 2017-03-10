@@ -20,6 +20,61 @@
     
     window.onload = function () {
         BoundBall.init();
+        var coffee = new Coffee();
+        coffee.make(0,0);
+        coffee.eat();
+        var holly = new HollysCoffee();
+        holly.setCandy(50);
+        holly.setPrime(50);
+//        holly.make({
+//            prime:100, 
+//            candy:50, 
+//            newprime:1000,
+//        });
+        holly.make(10,20);
+        holly.eat();
+        
+    }
+    
+    // 커피 
+    class Coffee {
+        constructor() {
+            this.prime = 20; // 프림
+            this.candy = 30; // 설탕
+            this.coffee = "";
+        }
+        setPrime(_p) {
+            this.prime = _p;
+        }
+        setCandy(_c) {
+            this.candy = _c;
+        }        
+        // 제조
+        make(_prime, _candy){
+            console.log(`${_prime}, ${_candy} 적당한 프림과 설탕을 넣어 제조 하세요.`);
+        }
+        // 먹다
+        eat(){
+            console.log("적당한 커피가 없습니다. ㅠㅠ");
+        }
+    }
+    
+    // 할리스 커피
+    class HollysCoffee extends Coffee {
+        constructor() {
+            super();
+        }
+        make(_prime, _candy) {
+            console.log(`주문한 내용은 프림:${this.prime+_prime}, 추가프림:${_prime}, 설탕:${this.candy+_candy}, 추가설탕: ${_candy}`);
+            this.coffee = this.prime + _prime + this.candy + _candy;
+            return this.coffee;
+        }
+//        make({prime=0, candy=0, newprime=0}) {
+//            console.log(`${prime}, ${candy}, ${newprime} 입니다.`);
+//        }
+        eat() {
+            console.log(`주문한 커피는 ${this.coffee} 만큼 맛납니다.`);
+        }
     }
     
     var Box = {

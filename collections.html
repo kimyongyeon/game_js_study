@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>collections</title>
+</head>
+<body>
+    <script>
+        window.onload = function() {
+            console.log("game start");
+            var mymap = new MyMap();
+            var a = ["a", "b", "c"];
+            for (var i in a) {
+                console.log(i);
+            }
+            for (value of a ) {
+                console.log(value);
+            }
+        }
+        
+        class MyMap {
+            
+            constructor() {
+               this.m = new Map();
+               this.m.set("1", "kkkk");
+               console.log(this.m.get("1"));
+            }
+            
+            list() {
+                
+            }
+            
+            set() {
+                
+            }
+        }
+    </script>
+</body>
+</html>
