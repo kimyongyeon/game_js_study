@@ -58,6 +58,19 @@
         var verticalvel1; // interval 시작 시에 수직 변위를 저장할 변수
         var verticalvel2; // 중력에 의해 변경된 후 interval 종료 시에 수직 변위를 저장할 변수 
         
+        var cannonx = 10; // 대포의 x 위치
+        var cannony = 280; // 대포의 y 위치 
+        var cannonlength = 200; // 대포 길이(너비)
+        var cannonht = 20; // 대포 높이
+        var targetx = 500; // 목표물의 x위치
+        var targety = 50; // 목표물의 y위치
+        var targetw = 85; // 목표물의 너비
+        var targeth = 280; // 목표물의 높이
+        var htargetx = 450; // 명중 목표물의 x위치
+        var htargety = 220; // 명중 목표물의 y위치
+        var htargetw = 355; // 명중 목표물의 너비
+        var htargeth = 96; //  명중 목표물의 높이
+        
         var gravity = 2; // 수직 변위의 변동량, 호의 모양이 그럴듯하게 임의로 정할 것
         var iballx = 20; // 포탄의 초기 수평 좌표
         var ibally = 300; // 포탄의 초기 수직 좌표
@@ -72,6 +85,35 @@
             everything.push(ground);
             everything.push(cball);
             init();
+            
+            this.target = new Picture(targetx, targety, targetw, targeth, "hill.jpg"); // 새 Picture객체를 생성해서 target 변수에 할당
+            this.htarget = new Picture(htargetx, htargety, htargetw, htargeth, "plateau.jpg"); // 새 Picture 객체를 생성해서 htarget변수에 할당
+            this.ground = new Myrectangle(0, 300, 600, 30, "rgb(10, 250, 0)"); // 새 Myrectangle 객체를 생성해서 ground 변수에 할당
+            this.cannon = new Myrectangle(cannonx, cannony, cannonlength, cannonht, "rgb(40, 40, 0)"); // 새 Myrectangle객체를 생성해서 cannon변수에 할당
+            this.targetindex = everything.length; // target 의 인덱스가 될 값을 저장
+            everything.push([this.target, false]); // everything에 target 추가
+            everything.push([this.ground, false]); // everything에 ground 추가
+            this.ballindex = everything.length; // cball의 인덱스가 될 값을 저장
+            everything.push([cball, false]); // everything에 cball추가
+            this.cannonindex = everything.length; // 대포의 인덱스가 될 값을 저장
+            everything.puh([cannon, true, 0, cannonx, cannony + cannonht * 0.5]); // everything에 cannon추가. 회전을 위한 공간 예비
+        }
+        
+        function Picture(sx sy, swdith, sheight, filen) {
+            var imga = new  Image();
+            imga.src = filen;
+            this.sx = sx;
+            this.sy = sy;
+            this.img = imga;
+            this.swidth = swdith;
+            this.sheight = sheight;
+            this.draw = drawAnImage;
+            this.moveit = moveball;
+            
+        }
+        
+        function drawAnImage() {
+            ctx.drawImage(this.img, this.sx, this.sy, this.swidth, this.sheight);
         }
         
 //        function drawsling() {
@@ -94,9 +136,17 @@
         }
         
         function fire () {
-            cball.sx = iballx;
-            cball.sy = ibally;
-            horvelocity=Number(document.f.hv.value);            verticalvel1=Number(document.f.vv.value);
+            var angle = Number(document.f.ang.value); // 폼에서 각도를 추출하여 숫자로 변환
+            var outofcannon = Number(document.f.vo.value); // 폼에서 대포 발사 속도를 추출하여 숫자로 변환
+            var angleradians = angle * Math.PI / 180; // 라디안 단위로 환산
+            horvelocity = outofcannon*Math.cos(angleradians); // 수평 속도 계산
+            verticalvel1 = -outofcannon*Math.sin(angleradians); // 초기 수직 속도 계산
+            everything[this.cannonindex][2] = -angleradians; // 대포를 회전시킬 정보 설정
+            cball.sx = cannonx + cannonlength * Math.cos(angleradians); // cball의 x위치를 회전한 대포 입구로 지정
+            cball.sy = cannony + cannonht * 0.5 - cannonlength * Math.sin(angleradians); // cball의 y위치를 회전한 대포 입구로 지정
+//            cball.sx = iballx;
+//            cball.sy = ibally;
+//            horvelocity=Number(document.f.hv.value);            verticalvel1=Number(document.f.vv.value);
             drawAll();
             tid=setInterval(change, 100);
             return false;
